@@ -18,7 +18,8 @@ cloud-image-processing/
 ├── image_processor.py   # Image processing and cloud upload logic
 ├── requirements.txt     # Python dependencies
 ├── Dockerfile           # Docker build configuration
-├── test_images          # Test Images
+├── hugginface/          # Contains all files required to deploy on Hugginface
+├── test_images/         # Test Images
 └── processed_images/    # Processed Images
 ```
 
