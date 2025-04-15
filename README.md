@@ -1,6 +1,5 @@
 #!/bin/bash
 
-cat << 'EOF' > README.md
 # ☁️ Cloud-Based Image Processing Service
 
 The **Cloud-Based Image Processing Service** provides a scalable and efficient platform for uploading, processing, and downloading images via a RESTful API. It leverages real-time cloud execution and Google Cloud Storage to deliver seamless, on-demand image operations including grayscale conversion, resizing, format transformation, and watermark application (extendable).
