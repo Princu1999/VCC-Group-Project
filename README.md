@@ -187,4 +187,3 @@ https://storage.googleapis.com/my-image-processor-bucket/processed/sample_proces
 ---
 
 > Built with ❤️ using Flask and Google Cloud for modern cloud-based workflows.
-EOF
