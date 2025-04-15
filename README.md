@@ -177,12 +177,4 @@ You! Contributions, suggestions, and forks are welcome!
 
 This project is licensed under the MIT License – see the `LICENSE` file for details.
 
----
-
-## 🌐 Example Public URL
-
-https://storage.googleapis.com/my-image-processor-bucket/processed/sample_processed.jpg
-
----
-
 > Built with ❤️ using Flask and Google Cloud for modern cloud-based workflows.
