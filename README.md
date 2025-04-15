@@ -18,7 +18,8 @@ cloud-image-processing/
 ├── image_processor.py   # Image processing and cloud upload logic
 ├── requirements.txt     # Python dependencies
 ├── Dockerfile           # Docker build configuration
-└── processed_images/    # Directory where processed images are temporarily stored
+├── test_images          # Test Images
+└── processed_images/    # Processed Images
 ```
 
 ---
