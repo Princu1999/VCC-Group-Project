@@ -8,10 +8,6 @@ A lightweight, cloud-ready image processing service with a simple REST API for *
 
 **Hugging Face Space:** https://huggingface.co/spaces/Princu1999/Cloud-Image-Processing-Service
 
-> The Space is currently *Running*. Use the UI to upload an image and view the processed result.
-
-![Hugging Face Deployment Screenshot](assets/hf_deploy.png "Hugging Face Space — replace this placeholder with a real screenshot")
-
 ---
 
 ## Demo Video
