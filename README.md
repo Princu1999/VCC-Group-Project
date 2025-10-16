@@ -13,7 +13,7 @@ A lightweight, cloud-ready image processing service with a simple REST API for *
 
 ## Demo Video (Links)
 
-- ▶️ **Google Drive (primary):** [{drive_url}]({[https://drive.google.com/drive/folders/1eZ5uzObQP_B4z2AhCW7okS8adEhJrPXG]})
+- ▶️ **Google Drive (primary):** [[https://drive.google.com/drive/folders/1eZ5uzObQP_B4z2AhCW7okS8adEhJrPXG]]({})
 - 💾 **Local fallback (repo asset):** [assets/demo.mp4](assets/VCC_Project_demo.mp4)  *(optional — keep if you store a copy in the repo)*
 
 ---
