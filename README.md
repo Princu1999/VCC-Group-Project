@@ -1,180 +1,197 @@
-# ☁️ Cloud-Based Image Processing Service
+# Cloud Image Processing API (Flask + Google Cloud Storage)
 
-The **Cloud-Based Image Processing Service** provides a scalable and efficient platform for uploading, processing, and downloading images via a RESTful API. It leverages real-time cloud execution and Google Cloud Storage to deliver seamless, on-demand image operations including grayscale conversion, resizing, format transformation, and watermark application (extendable).
-
-Designed with modularity and simplicity in mind, it is well-suited for:
-- 🛒 **E-commerce** (e.g., product image optimization)
-- 📱 **Social media platforms** (e.g., auto-formatting and watermarking)
-- 🏥 **Medical imaging** (e.g., secure cloud storage and batch processing)
+A lightweight, cloud-ready image processing service with a simple REST API for **upload → process → store → fetch** workflows. Current operations include grayscale conversion, with an extensible hook for adding resize, format conversion, or watermarking. Built with **Flask** and designed to run locally, in Docker, or on **Google Cloud Run**.
 
 ---
 
-## 📂 Project Structure
+## Live Demo
+
+**Hugging Face Space:** https://huggingface.co/spaces/Princu1999/Cloud-Image-Processing-Service
+
+> The Space is currently *Running*. Use the UI to upload an image and view the processed result.
+
+![Hugging Face Deployment Screenshot](assets/hf_deploy.png "Hugging Face Space — replace this placeholder with a real screenshot")
+
+---
+
+## Demo Video
+
+If you have a recorded walkthrough, embed it here:
+
+<video src="assets/demo.mp4" controls width="720">
+  Your browser does not support embedded videos. You can also [download the video](assets/demo.mp4).
+</video>
+
+> Put your video file at `assets/demo.mp4` (or change the path above). If the video is hosted publicly, add that link here as well.
+
+---
+
+## Features
+
+- Upload an image via API and apply basic processing (grayscale).
+- Store processed outputs in **Google Cloud Storage** and get a **public URL**.
+- Download processed images via API.
+- One-file Flask app, minimal deps, **Docker-ready** for easy deployment.
+
+---
+
+## Project Structure
 
 ```
-cloud-image-processing/
-│
-├── app.py               # Flask app logic and API routes
-├── image_processor.py   # Image processing and cloud upload logic
+VCC-Group-Project/
+├── app.py               # Flask app & routes
+├── image_processor.py   # Processing + GCS helpers
 ├── requirements.txt     # Python dependencies
-├── Dockerfile           # Docker build configuration
-├── hugginface/          # Contains all files required to deploy on Hugginface
-├── test_images/         # Test Images
-└── processed_images/    # Processed Images
+├── Dockerfile           # Container build
+├── huggingface/         # Assets for Space/hosted demo
+├── test_images/         # Sample input images
+├── processed_image/     # Sample outputs (local)
+└── assets/              # README media (hf_deploy.png, demo.mp4)
 ```
 
----
-
-## 🚀 Features
-
-- ✅ Upload image via API
-- 🎨 Convert image to grayscale (can be extended to support resizing, watermarking, etc.)
-- ☁️ Upload processed image to **Google Cloud Storage**
-- 🔗 Get a public URL to access the processed image
-- 📥 Download processed images via API
-- ⚙️ Easily deployable via **Docker**
-- 📈 Designed for scalability using **Cloud Run / Cloud Functions**
+> Folder names reflect what’s currently present in the repository. Adjust if your layout changes.
 
 ---
 
-## 📦 Requirements
+## Quick Start
 
-- Python 3.9+
-- Google Cloud Account (with a Storage bucket created)
-- Google Cloud credentials (`GOOGLE_APPLICATION_CREDENTIALS` env variable)
-- Docker (for container deployment)
-
----
-
-## 🛠️ Setup Instructions
-
-### 1. Clone the repository
+### 1) Local setup
 
 ```bash
-git clone https://github.com/your-username/cloud-image-processing.git
-cd cloud-image-processing
-```
+# clone
+git clone https://github.com/Princu1999/VCC-Group-Project.git
+cd VCC-Group-Project
 
-### 2. Install dependencies
-
-```bash
+# python deps
 pip install -r requirements.txt
 ```
 
-### 3. Set environment variables
+Set required environment variables:
 
 ```bash
-export GOOGLE_APPLICATION_CREDENTIALS="path/to/your/service-account-key.json"
-export BUCKET_NAME="your-gcs-bucket-name"
+# path to your GCP service account key (JSON)
+export GOOGLE_APPLICATION_CREDENTIALS="/absolute/path/to/key.json"
+
+# name of your existing GCS bucket
+export BUCKET_NAME="your-bucket-name"
 ```
 
-### 4. Run the Flask app locally
+Run:
 
 ```bash
 python app.py
+# app listens on 0.0.0.0:8080 by default (adjust if needed)
 ```
+
+> The service expects valid GCP credentials and an existing bucket.
 
 ---
 
-## 🧪 API Usage
+## API
 
-### 🔼 Upload an Image
+### Upload & Process
 
-- **Endpoint:** `POST /upload`
-- **Form-data:**  
-  - `image`: (binary file)
+**POST** `/upload`  
+Form-data: `image` (binary file)
 
-#### Response
-
+**Response (JSON):**
 ```json
 {
   "message": "Image processed successfully",
-  "processed_image_url": "https://storage.googleapis.com/your-bucket-name/processed/example_processed.jpg"
+  "processed_image_url": "https://storage.googleapis.com/<your-bucket>/processed/<name>_processed.jpg"
 }
 ```
 
----
-
-### 🔽 Download an Image
-
-- **Endpoint:** `GET /download?filename=example_processed.jpg`
-- **Response:** Returns the image as an attachment
-
----
-
-## 🐳 Docker Deployment
-
-### 1. Create a `requirements.txt`
-
-```txt
-Flask
-Pillow
-google-cloud-storage
+**Example (curl):**
+```bash
+curl -X POST http://localhost:8080/upload \
+  -F "image=@test_images/sample.jpg"
 ```
 
-### 2. Dockerfile
+### Download
 
-```dockerfile
-FROM python:3.9-slim
+**GET** `/download?filename=<name>`  
+Returns the image as an attachment if found.
 
-WORKDIR /app
-
-COPY . /app
-
-RUN pip install --no-cache-dir -r requirements.txt
-
-ENV FLASK_APP=app.py
-
-EXPOSE 8080
-
-CMD ["python", "app.py"]
+**Example:**
+```bash
+curl -L "http://localhost:8080/download?filename=example_processed.jpg" \
+  -o example_processed.jpg
 ```
 
-### 3. Build the Docker image
+> Endpoint names and response shapes match the current code. If you change function names or paths, update this section accordingly.
+
+---
+
+## Configuration
+
+| Variable                         | Purpose                                        |
+|----------------------------------|------------------------------------------------|
+| `GOOGLE_APPLICATION_CREDENTIALS` | Absolute path to your GCP service account key  |
+| `BUCKET_NAME`                    | Target Google Cloud Storage bucket name        |
+
+---
+
+## Docker
+
+Build the image:
 
 ```bash
 docker build -t cloud-image-service .
 ```
 
-### 4. Run the container
+Run the container:
 
 ```bash
 docker run -p 8080:8080 \
-  -e BUCKET_NAME="your-gcs-bucket-name" \
+  -e BUCKET_NAME="your-bucket-name" \
   -e GOOGLE_APPLICATION_CREDENTIALS="/app/key.json" \
-  -v $(pwd)/key.json:/app/key.json \
+  -v "$(pwd)/key.json:/app/key.json" \
   cloud-image-service
 ```
 
----
-
-## 📡 Deployment on Google Cloud Run (Optional)
-
-- Enable **Cloud Run** and **Cloud Storage** in GCP
-- Push Docker image to **Google Container Registry**
-- Deploy with appropriate **IAM permissions** and **environment variables**
+> The provided `Dockerfile` and requirements are set up for a slim Python image that runs `app.py`.
 
 ---
 
-## ✅ Future Enhancements
+## Deploying on Google Cloud Run (Optional)
 
-- 🖼️ Add support for:
-  - Image resizing
-  - Format conversion (e.g., PNG to JPG)
-  - Watermark/logo overlay
-- 🧠 Integrate ML-based image enhancements
-- 🔐 Authenticated endpoints for secured image access
+1. Enable **Cloud Run** and **Cloud Storage** in your GCP project.  
+2. Push your Docker image to Artifact/Container Registry.  
+3. Deploy on Cloud Run, passing the two environment variables above and granting the service account permission to write to the bucket.  
+4. Set **ingress** and **authentication** per your needs (public vs. private).
 
 ---
 
-## 👥 Contributors
+## Testing
 
-You! Contributions, suggestions, and forks are welcome!
+- Use the sample files in `test_images/` with the curl commands above.  
+- Add unit tests for `image_processor.py` (e.g., verifying grayscale transform and GCS upload stub).  
+- Consider adding a GitHub Actions workflow to run linting and tests.
 
 ---
 
-## 📃 License
+## Roadmap
 
-This project is licensed under the MIT License – see the `LICENSE` file for details.
+- [ ] Add image **resize**, **format conversion**, and **watermark** options  
+- [ ] Optional authentication for private buckets/routes  
+- [ ] CI workflow and basic tests  
+- [ ] Simple web UI for manual uploads
 
-> Built with ❤️ using Flask and Google Cloud for modern cloud-based workflows.
+---
+
+## Contributing
+
+Issues and PRs are welcome! Please open an issue to discuss any non-trivial changes first.
+
+---
+
+## License
+
+MIT — add a `LICENSE` file if missing.
+
+---
+
+### Acknowledgements
+
+Built with ❤️ using **Flask** and **Google Cloud Storage**.
