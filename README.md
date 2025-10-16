@@ -18,11 +18,10 @@ A lightweight, cloud-ready image processing service with a simple REST API for *
 
 If you have a recorded walkthrough, embed it here:
 
-<video src="assets/demo.mp4" controls width="720">
+<video src="assets/VCC_Project_demo.mp4" controls width="720">
   Your browser does not support embedded videos. You can also [download the video](assets/demo.mp4).
 </video>
 
-> Put your video file at `assets/demo.mp4` (or change the path above). If the video is hosted publicly, add that link here as well.
 
 ---
 
