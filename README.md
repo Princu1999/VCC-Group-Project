@@ -16,10 +16,8 @@ A lightweight, cloud-ready image processing service with a simple REST API for *
 
 ## Demo Video
 
-If you have a recorded walkthrough, embed it here:
 
 <video src="assets/VCC_Project_demo.mp4" controls width="720">
-  Your browser does not support embedded videos. You can also [download the video](assets/demo.mp4).
 </video>
 
 
